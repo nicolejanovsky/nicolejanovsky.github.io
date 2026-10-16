@@ -1200,3 +1200,9 @@ body.portfolio-home{background:#F5F1EB}
   backdrop-filter:none;
  }
 }
+
+/* One shared cover-label color, including script-generated headings. */
+#work .home-work-grid .project-visual .visual-label,
+#work .home-work-grid .project-visual .visual-label.portfolio-cover-heading{
+ color:#FFF9F2;
+}
