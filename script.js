@@ -19,7 +19,7 @@ Object.assign(projects, {
  marketplace:{label:'FACEBOOK MARKETPLACE / CAMPAIGN',name:'Facebook Marketplace',title:'Notice something<br><em>missing?</em>',lead:'Marketplace has it.',type:'Campaign · Visual design',pending:true,overview:'A visual campaign for Facebook Marketplace built around a simple idea: notice something missing? Marketplace has it.'},
  chanel:{label:'CHANEL / EDITORIAL DESIGN',name:'Chanel',title:'The art of<br><em>the detail.</em>',lead:'Exploring structure and hierarchy in editorial design.',type:'Editorial · Visual design',pending:true,overview:'An editorial design project exploring typography, composition, and hierarchy through the visual world of Chanel.'}
 });
-Object.assign(projects.tide,{pending:false,label:'TIDE / THE ZEN CYCLE',name:'Tide / The Zen Cycle'});
+Object.assign(projects.tide,{pending:false,label:'TIDE',name:'Tide'});
 Object.assign(projects.marketplace,{pending:false,label:'FACEBOOK MARKETPLACE / STUDENT CAMPAIGN'});
 Object.assign(projects.relax,{pending:false,label:'RELAX / MEDITATION APP CONCEPT'});
 Object.assign(projects.chanel,{pending:false,label:'CHANEL / EDITORIAL DESIGN'});
@@ -1755,5 +1755,216 @@ remainingCaseStyles.textContent = `
 .yg.fm .fm-display{background:#f1f3f5}
 .yg:is(.td,.fm) .vp-switch button{border-color:#b8c1ca;color:#52606d}
 .yg:is(.td,.fm) .vp-switch button[aria-pressed="true"]{background:#3e4a56;border-color:#3e4a56;color:#fff}
+
+/* Tide touchpoints: a single shared grid aligns image and caption edges. */
+.yg.td .td-touchpoint-grid{
+ display:grid;
+ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);
+ grid-template-rows:repeat(2,minmax(0,1fr));
+ gap:28px;
+ height:clamp(580px,65vw,800px);
+ align-items:stretch;
+}
+.yg.td .td-touchpoint-grid .td-takehomes{display:contents}
+.yg.td .td-touchpoint-grid .td-water{grid-column:1;grid-row:1 / span 2}
+.yg.td .td-touchpoint-grid .td-bands{grid-column:2;grid-row:1}
+.yg.td .td-touchpoint-grid .td-fan{grid-column:2;grid-row:2}
+.yg.td .td-touchpoint-grid .td-figure{
+ display:grid;
+ grid-template-rows:minmax(0,1fr) 58px;
+ gap:12px;
+ min-height:0;
+ min-width:0;
+ margin:0;
+}
+.yg.td .td-touchpoint-grid .td-figure a{
+ width:100%;height:100%;min-height:0;aspect-ratio:auto;border-radius:12px;
+}
+.yg.td .td-touchpoint-grid .td-figure img{width:100%;height:100%}
+.yg.td .td-touchpoint-grid .td-water img,.yg.td .td-touchpoint-grid .td-bands img{object-fit:cover}
+.yg.td .td-touchpoint-grid .td-fan img{object-fit:contain;padding:12px}
+.yg.td .td-touchpoint-grid .td-figure figcaption{
+ margin:0;padding-inline:8px;text-align:center;font-size:11px;line-height:1.65;
+}
+.yg.td .td-touchpoint-grid .td-figure figcaption span{margin-bottom:4px}
+@media(max-width:900px) and (min-width:701px){
+ .yg.td .td-touchpoint-grid{gap:24px}
+ .yg.td .td-touchpoint-grid .td-figure{grid-template-rows:minmax(0,1fr) 68px}
+}
+@media(max-width:700px){
+ .yg.td .td-touchpoint-grid{height:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:none;gap:28px}
+ .yg.td .td-touchpoint-grid .td-water,.yg.td .td-touchpoint-grid .td-bands,.yg.td .td-touchpoint-grid .td-fan{grid-column:auto;grid-row:auto}
+ .yg.td .td-touchpoint-grid .td-figure{grid-template-rows:auto auto;gap:12px}
+ .yg.td .td-touchpoint-grid .td-figure a{height:auto;aspect-ratio:1.3}
+ .yg.td .td-touchpoint-grid .td-water img{object-fit:contain;background:#e1e1e1}
+ .yg.td .td-touchpoint-grid .td-figure figcaption{padding-inline:8px}
+}
 `;
 document.head.appendChild(remainingCaseStyles);
+
+
+// Keep project cover headings present and consistent, including older homepage markup.
+(()=>{
+ const coverHeadings={"yogger": "YOGGER / PRODUCT DESIGN", "milestone": "MILESTONE / PRODUCT DESIGN", "reports": "YOGGER / VISUAL DESIGN", "relax": "RELAX / PRODUCT DESIGN", "marketplace": "FACEBOOK MARKETPLACE / CAMPAIGN DESIGN", "tide": "TIDE / EXPERIENTIAL DESIGN", "chanel": "CHANEL / EDITORIAL DESIGN"};
+ function syncPortfolioCoverHeadings(){
+  document.querySelectorAll('.home-work-grid .project-visual[data-project]').forEach(cover=>{
+   const title=coverHeadings[cover.dataset.project];
+   if(!title)return;
+   let label=cover.querySelector('.visual-label');
+   if(!label){label=document.createElement('span');cover.insertBefore(label,cover.firstChild);}
+   label.classList.add('visual-label','portfolio-cover-heading');
+   label.textContent=title;
+  });
+ }
+ const labelStyle=document.createElement('style');
+ labelStyle.textContent=`
+ .portfolio-home .home-work-grid .project-visual .visual-label.portfolio-cover-heading{
+  display:block;visibility:visible;opacity:1;position:absolute;z-index:20;
+  top:22px;left:24px;right:auto;bottom:auto;margin:0;
+  width:auto;max-width:calc(100% - 48px);height:auto;
+  font-family:'DM Sans',Arial,sans-serif;font-size:9px;font-weight:500;
+  line-height:1.6;letter-spacing:1px;color:#3E4A56;
+  text-align:left;pointer-events:none;transform:none;
+ }
+ .portfolio-home .home-work-grid .home-relax .visual-label.portfolio-cover-heading{color:#F7F4EF}
+ @media(max-width:1000px){
+  .portfolio-home .home-work-grid .project-visual .visual-label.portfolio-cover-heading{
+   top:17px;left:18px;max-width:calc(100% - 36px);font-size:8px;
+  }
+ }
+ `;
+ document.head.appendChild(labelStyle);
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncPortfolioCoverHeadings,{once:true});
+ else syncPortfolioCoverHeadings();
+})();
+
+// Cohesive case-study presentation; artwork colors remain intact.
+const cohesiveCaseStyles=document.createElement("style");
+cohesiveCaseStyles.textContent=`/* One paper, one ink, and one supporting palette per project. */
+#case-dialog:has(.yg),#case-content:has(.yg){background:#F5F1EB}
+#case-dialog .case-toolbar{background:#F5F1EBF5;border-color:#DAD3CA}
+#case-content .yg{
+ --yg-paper:#F5F1EB;--yg-ink:#2C3944;--yg-green:#536345;
+ --case-soft:#E5E8DE;--case-accent:#536345;
+ --case-stage:radial-gradient(ellipse at 46% 38%,#A3AC8B 0%,#889572 52%,#6B795A 100%);
+ background:var(--yg-paper);color:var(--yg-ink);
+}
+#case-content .yg.ms{
+ --case-soft:#E0E5EA;--case-accent:#4B6072;--yg-green:#4B6072;
+ --case-stage:linear-gradient(135deg,#A8B4C1 0%,#8B9BAB 58%,#708396 100%);
+}
+#case-content .yg.rx{
+ --case-soft:#E0E4E5;--case-accent:#344650;--yg-green:#344650;
+ --case-stage:radial-gradient(ellipse at 46% 38%,#46545E 0%,#303D47 52%,#202C34 100%);
+}
+#case-content .yg.fm{
+ --case-soft:#E8E1D9;--case-accent:#746455;--yg-green:#746455;
+ --case-stage:radial-gradient(ellipse at 46% 38%,#C0B6AA 0%,#A89B8E 52%,#8B7E72 100%);
+}
+#case-content .yg.td{
+ --case-soft:#E0E6E9;--case-accent:#4A6474;--yg-green:#4A6474;
+ --case-stage:radial-gradient(ellipse at 46% 38%,#A2B1BA 0%,#8195A2 52%,#627987 100%);
+}
+#case-content .yg.cn{
+ --case-soft:#ECE0E3;--case-accent:#802D49;--yg-green:#802D49;
+ --case-stage:radial-gradient(ellipse at 46% 38%,#A44765 0%,#802D49 52%,#5A1E34 100%);
+}
+#case-content .yg .yg-nav{background:#F5F1EBF2;border-color:#DAD3CA}
+#case-content .yg .yg-intro h1 em,
+#case-content .yg .yg-kicker{color:var(--case-accent)}
+#case-content .yg .yg-reflection{background:var(--case-soft)}
+#case-content .yg .yg-insight{background:var(--case-soft);border-color:var(--case-accent);color:var(--yg-ink)}
+#case-content .yg .yg-end button{background:#2C3944;color:#FFF9F2}
+#case-content .yg .yg-showcase,
+#case-content .yg.ms .ms-hero,
+#case-content .yg.rx .rx-hero,
+#case-content .yg.fm .fm-display,
+#case-content .yg.vd .vd-print-stage,
+#case-content .yg.vd .vd-spotlight-stage{background:var(--case-stage)}
+#case-content .yg .yg-showcase figcaption,
+#case-content .yg.ms .ms-hero figcaption,
+#case-content .yg.rx .rx-hero figcaption{color:#FFF9F2}
+#case-content .yg .yg-stage,
+#case-content .yg .yg-stage-score,
+#case-content .yg .yg-comparison-stage,
+#case-content .yg .yg-assessment-showcase,
+#case-content .yg.ms .ms-stage,
+#case-content .yg.ms .ms-stage-dark,
+#case-content .yg.ms .ms-scan,
+#case-content .yg.rx .rx-decision>figure,
+#case-content .yg.vd .vd-report-pair,
+#case-content .yg.vd .vd-web-laptop{background:var(--case-soft);color:var(--yg-ink)}
+#case-content .yg .yg-library-context,
+#case-content .yg .yg-icon-window{background:transparent}
+#case-content .yg .yg-color-panel{background:transparent;border-color:#DAD3CA}
+#case-content .yg.ms .ms-hero::after,
+#case-content .yg.ms .ms-fragment-stack::before{background:none}
+#case-content .yg.ms .ms-scan-controls button{color:var(--case-accent)}
+#case-content .yg.ms .ms-status{background:var(--case-soft);color:var(--case-accent)}
+#case-content .yg.ms .ms-scan-step{border-color:#85939F;color:#344650}
+#case-content .yg.td .td-concept{background:var(--case-soft);color:var(--yg-ink)}
+#case-content .yg.fm .fm-merch-grid a,
+#case-content .yg.cn .cn-objects a,
+#case-content .yg.cn .cn-spread a{background:var(--case-soft)}
+#case-content .yg.rx .rx-brand-row .vp-figure a{background:transparent}
+#case-content .yg.vd .vd-spotlight-picks button{background:var(--case-soft);color:#46533D}
+#case-content .yg.vd .vd-spotlight-picks button[aria-pressed="true"]{background:#D3DAC9;border-color:var(--case-accent)}
+#case-content .yg.vp .vp-switch button[aria-pressed="true"]{background:var(--case-accent);border-color:var(--case-accent);color:#FFF9F2}
+`;
+document.head.appendChild(cohesiveCaseStyles);
+
+const coverMatchedPageStyles=document.createElement("style");
+coverMatchedPageStyles.textContent=`/* Cover colors are the source of truth; secondary stages are 50% white tints. */
+#case-content .yg{
+ --case-base:#889572;
+ --case-soft:color-mix(in srgb,var(--case-base) 50%,white);
+ --case-soft-stage:linear-gradient(#FFFFFF80,#FFFFFF80),var(--case-stage);
+}
+#case-content .yg.ms{--case-base:#8B9BAB}
+#case-content .yg.rx{
+ --case-base:#3E4A56;
+ --case-stage:linear-gradient(135deg,#53606B 0%,#3E4A56 58%,#333F4B 100%);
+}
+#case-content .yg.fm{--case-base:#A89B8E}
+#case-content .yg.td{--case-base:#8195A2}
+#case-content .yg.cn{--case-base:#802D49}
+#case-content .yg .yg-showcase,
+#case-content .yg.ms .ms-hero,
+#case-content .yg.rx .rx-hero,
+#case-content .yg.vd .vd-print-stage{background:var(--case-stage)}
+/* Give the print/campaign hero artwork a matching presentation mat. */
+#case-content .yg.td .td-hero>a,
+#case-content .yg.cn .cn-hero>a,
+#case-content .yg.fm .fm-scene-link{
+ background:var(--case-stage);padding:clamp(16px,3vw,42px);display:block;
+ border-radius:10px;
+}
+#case-content .yg .yg-stage,
+#case-content .yg .yg-stage-score,
+#case-content .yg .yg-comparison-stage,
+#case-content .yg .yg-assessment-showcase,
+#case-content .yg.ms .ms-stage,
+#case-content .yg.ms .ms-stage-dark,
+#case-content .yg.ms .ms-scan,
+#case-content .yg.rx .rx-decision>figure,
+#case-content .yg.vd .vd-spotlight-stage,
+#case-content .yg.vd .vd-report-pair,
+#case-content .yg.vd .vd-web-laptop,
+#case-content .yg.cn .cn-objects a,
+#case-content .yg.cn .cn-spread a,
+#case-content .yg.fm .fm-merch-grid a{
+ background:var(--case-soft-stage);color:#2C3944;
+}
+/* Blue accent rows stay blue, with the same 50% tint treatment. */
+#case-content .yg.fm .fm-display{
+ background:linear-gradient(#FFFFFF80,#FFFFFF80),radial-gradient(ellipse at 46% 38%,#A2B1BA 0%,#8195A2 52%,#627987 100%);
+ color:#2C3944;
+}
+#case-content .yg.td .td-concept{background:var(--case-soft-stage);color:#2C3944}
+#case-content .yg .yg-reflection{background:var(--case-soft)}
+#case-content .yg .yg-stage figcaption,
+#case-content .yg .yg-comparison-stage figcaption,
+#case-content .yg.ms .ms-stage figcaption,
+#case-content .yg.vd .vd-report-pair figcaption{color:#34434D}
+`;
+document.head.appendChild(coverMatchedPageStyles);
