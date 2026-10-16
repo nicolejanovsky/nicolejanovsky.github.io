@@ -1,0 +1,29 @@
+PORTFOLIO BACKGROUND COLORS — DESKTOP AND MOBILE
+
+Replace index.html, style.css, and script.js with the files in this ZIP. Keep your assets folder.
+Color values are shared across all viewport sizes. Supporting stages mix each cover stop with 50% white.
+Artwork, screenshots, mockup surfaces, and semantic UI colors remain unchanged.
+
+Shared paper: #F5F1EB
+Shared ink: #2C3944
+Footer: #26333C
+White library panel: #FFFFFF
+Footer accent: #D8DFCD
+Homepage serif accent: #872D49
+
+PROJECT | COVER / TOP SHOWCASE (3 gradient stops) | SUPPORTING IMAGE STAGES (50% white) | TEXT ACCENT
+Yogger mobile + Yogger beyond the app | #A3AC8B / #889572 / #6B795A | #D1D6C5 / #C4CAB9 / #B5BCAD | #536345
+Milestone | #A8B4C1 / #8B9BAB / #708396 | #D4DAE0 / #C5CDD5 / #B8C1CB | #4B6072
+Relax | #53606B / #3E4A56 / #333F4B | #A9B0B5 / #9FA5AB / #999FA5 | #344650
+Marketplace | #C0B6AA / #A89B8E / #8B7E72 | #E0DBD5 / #D4CDC7 / #C5BFB9 | #746455
+Tide | #A2B1BA / #8195A2 / #627987 | #D1D8DD / #C0CAD1 / #B1BCC3 | #4A6474
+Chanel | #A44765 / #802D49 / #5A1E34 | #D2A3B2 / #C096A4 / #AD8F9A | #802D49
+
+Facebook digital display and Tide concept row use the Tide blue gradient at 50% white:
+#D1D8DD / #C0CAD1 / #B1BCC3
+
+Tide, Facebook Marketplace, and Chanel first case-study images have transparent wrappers and no extra padding or colored frame.
+Relax cover and hero: dark blue-charcoal, with no teal override.
+Phone and interface artwork colors are part of the original work and are not recolored.
+
+Asset note: neckFlexionExtension.png and backFlexion.png are referenced by the library but were not present in the available asset bank. Keep those filenames if you add those images.

@@ -3,10 +3,10 @@ const content=document.querySelector('#case-content');
 let lastTrigger;
 const projects={
  yogger:{label:'YOGGER / MOBILE APP REDESIGN'},
- milestone:{label:'MILESTONE / FITNESS PRODUCT CONCEPT',title:'Less tracking friction.<br><span class="serif">More showing up.</span>',lead:'A simple workout logger and a protein-first tracker, designed around everyday consistency.',role:'Product concept · UX/UI direction',type:'Fitness · Mobile app',visual:'milestone',sections:[
+ milestone:{label:'MILESTONE / FITNESS APP',title:'Less tracking friction.<br><span class="serif">More showing up.</span>',lead:'A simple workout logger and a protein-first tracker, designed around everyday consistency.',role:'Protein tracker · Product design · UX/UI',type:'Fitness · Mobile app',visual:'milestone',sections:[
  ['THE OPPORTUNITY','Progress without<br><span class="serif">the mental load.</span>','The concept brings together a workout logger that feels like a step up from Notes and protein tracking that keeps the focus on one useful daily goal.','The design question','How can logging feel light enough to become a habit, while still giving people a clear picture of their progress?'],
  ['01 / WORKOUT LOGGING','Keep the useful bits.<br><span class="serif">Keep it simple.</span>','The logger is designed around recording a workout quickly, with enough structure to make it more useful than a loose note.','The product direction','Make the core logging flow clear and direct. Additional features should support that task without competing with it.'],
- ['02 / PROTEIN FIRST','One goal.<br><span class="serif">An obvious next step.</span>','Protein tracking uses a clear daily target, visible progress, and quick logging. AI supports the protein tracking feature; the workout logger remains a separate, simple experience.','The visual direction','The preview explores a large progress indicator and concise meal entries. This is an illustrative interface direction, not a screenshot of the released app.'],
+ ['02 / PROTEIN FIRST','One goal.<br><span class="serif">An obvious next step.</span>','Protein tracking uses a clear daily target, visible progress, and quick logging. AI supports the protein tracking feature; the workout logger remains a separate, simple experience.','The visual direction','I designed the protein tracker around clear daily progress, concise meal entries, and editable protein estimates.'],
  ['03 / CONSISTENCY','A little encouragement<br><span class="serif">goes a long way.</span>','Friend streaks are central to the concept. They add a shared reason to keep showing up, alongside individual workout and protein progress.','What I would validate next','Evaluate how quickly people can log an entry, whether they understand their daily progress, and whether friend streaks encourage a sustainable habit.']
  ]},
 
@@ -578,6 +578,12 @@ content.addEventListener('error',event => {
   const name=decodeURIComponent(img.getAttribute('src').split('/').pop());
   const replacement=yoggerImageFallbacks[name];
   if(replacement){img.dataset.fallbackTried='true';img.src='assets/'+replacement;}
+  else if(img.closest('.yg-assessment-showcase .yg-flow-card')){
+    img.dataset.fallbackTried='true';img.hidden=true;
+    const fallback=document.createElement('span');
+    fallback.className='yg-artwork-unavailable';fallback.textContent='Preview unavailable';
+    img.after(fallback);
+  }
 },true);
 
 function renderAssessmentRows() {
@@ -645,6 +651,7 @@ function enablePreviewDragging() {
     view.addEventListener('pointerup',end);view.addEventListener('pointercancel',end);
     view.addEventListener('dragstart',event=>event.preventDefault());
     const moving=view.closest('.yg-flow-moving') || view.classList.contains('yg-icon-window');
+    if(view.closest('.yg-assessment-showcase') && !matchMedia('(hover:hover) and (pointer:fine)').matches)return;
     if(!moving)return;
     const tick=time => {
       if(!view.isConnected)return;
@@ -1416,7 +1423,7 @@ relaxStyles.textContent += `
 .yg.rx .rx-brand-row .vp-figure a{display:block;width:100%;aspect-ratio:1.15;background:#e4e9e6;border-radius:10px;overflow:hidden}
 .yg.rx .rx-brand-row .vp-figure img{display:block;width:100%;height:100%;aspect-ratio:auto;object-fit:contain}
 .yg.rx .rx-brand-row figcaption{margin-top:16px;text-align:center;font-size:9px;letter-spacing:.7px;line-height:1.6}
-.portfolio-home .home-work-grid .home-relax{background:linear-gradient(135deg,#d9e8e2,#a3c4c0)}
+
 .portfolio-home .home-relax .rx-home-phones{width:68%;left:16%;top:55%;gap:13px;align-items:center}
 .portfolio-home .home-relax .rx-cover-device{width:30%;max-width:125px;transform:none;border-radius:17px;padding:3px;background:#17353d;box-shadow:0 14px 24px #14303924}
 .portfolio-home .home-relax .rx-cover-device img{border-radius:14px}
@@ -1647,7 +1654,7 @@ function setupYogger() {
 
 function visualFor(project){
  const source=document.querySelector(project.visual==='milestone'?'.milestone-phone':'.browser-mock').outerHTML;
- return '<div class="case-demo" style="'+(project.visual==='website'?'background:#2c3944':'')+'"><span class="demo-label" style="'+(project.visual==='website'?'color:white':'')+'">ILLUSTRATIVE INTERFACE DIRECTION</span>'+source+'</div>';
+ return '<div class="case-demo" style="'+(project.visual==='website'?'background:#2c3944':'')+'"><span class="demo-label" style="'+(project.visual==='website'?'color:white':'')+'">INTERFACE DESIGN</span>'+source+'</div>';
 }
 function openProject(key,trigger){if(key==='website')key='reports';const p=projects[key];if(!p)return;content.querySelectorAll('video').forEach(video=>video.pause());lastTrigger=trigger;
  yoggerObserver?.disconnect();
@@ -1838,133 +1845,35 @@ document.head.appendChild(remainingCaseStyles);
  else syncPortfolioCoverHeadings();
 })();
 
-// Cohesive case-study presentation; artwork colors remain intact.
-const cohesiveCaseStyles=document.createElement("style");
-cohesiveCaseStyles.textContent=`/* One paper, one ink, and one supporting palette per project. */
-#case-dialog:has(.yg),#case-content:has(.yg){background:#F5F1EB}
-#case-dialog .case-toolbar{background:#F5F1EBF5;border-color:#DAD3CA}
-#case-content .yg{
- --yg-paper:#F5F1EB;--yg-ink:#2C3944;--yg-green:#536345;
- --case-soft:#E5E8DE;--case-accent:#536345;
- --case-stage:radial-gradient(ellipse at 46% 38%,#A3AC8B 0%,#889572 52%,#6B795A 100%);
- background:var(--yg-paper);color:var(--yg-ink);
-}
-#case-content .yg.ms{
- --case-soft:#E0E5EA;--case-accent:#4B6072;--yg-green:#4B6072;
- --case-stage:linear-gradient(135deg,#A8B4C1 0%,#8B9BAB 58%,#708396 100%);
-}
-#case-content .yg.rx{
- --case-soft:#E0E4E5;--case-accent:#344650;--yg-green:#344650;
- --case-stage:radial-gradient(ellipse at 46% 38%,#46545E 0%,#303D47 52%,#202C34 100%);
-}
-#case-content .yg.fm{
- --case-soft:#E8E1D9;--case-accent:#746455;--yg-green:#746455;
- --case-stage:radial-gradient(ellipse at 46% 38%,#C0B6AA 0%,#A89B8E 52%,#8B7E72 100%);
-}
-#case-content .yg.td{
- --case-soft:#E0E6E9;--case-accent:#4A6474;--yg-green:#4A6474;
- --case-stage:radial-gradient(ellipse at 46% 38%,#A2B1BA 0%,#8195A2 52%,#627987 100%);
-}
-#case-content .yg.cn{
- --case-soft:#ECE0E3;--case-accent:#802D49;--yg-green:#802D49;
- --case-stage:radial-gradient(ellipse at 46% 38%,#A44765 0%,#802D49 52%,#5A1E34 100%);
-}
-#case-content .yg .yg-nav{background:#F5F1EBF2;border-color:#DAD3CA}
-#case-content .yg .yg-intro h1 em,
-#case-content .yg .yg-kicker{color:var(--case-accent)}
-#case-content .yg .yg-reflection{background:var(--case-soft)}
-#case-content .yg .yg-insight{background:var(--case-soft);border-color:var(--case-accent);color:var(--yg-ink)}
-#case-content .yg .yg-end button{background:#2C3944;color:#FFF9F2}
-#case-content .yg .yg-showcase,
-#case-content .yg.ms .ms-hero,
-#case-content .yg.rx .rx-hero,
-#case-content .yg.fm .fm-display,
-#case-content .yg.vd .vd-print-stage,
-#case-content .yg.vd .vd-spotlight-stage{background:var(--case-stage)}
-#case-content .yg .yg-showcase figcaption,
-#case-content .yg.ms .ms-hero figcaption,
-#case-content .yg.rx .rx-hero figcaption{color:#FFF9F2}
-#case-content .yg .yg-stage,
-#case-content .yg .yg-stage-score,
-#case-content .yg .yg-comparison-stage,
-#case-content .yg .yg-assessment-showcase,
-#case-content .yg.ms .ms-stage,
-#case-content .yg.ms .ms-stage-dark,
-#case-content .yg.ms .ms-scan,
-#case-content .yg.rx .rx-decision>figure,
-#case-content .yg.vd .vd-report-pair,
-#case-content .yg.vd .vd-web-laptop{background:var(--case-soft);color:var(--yg-ink)}
-#case-content .yg .yg-library-context,
-#case-content .yg .yg-icon-window{background:transparent}
-#case-content .yg .yg-color-panel{background:transparent;border-color:#DAD3CA}
-#case-content .yg.ms .ms-hero::after,
-#case-content .yg.ms .ms-fragment-stack::before{background:none}
-#case-content .yg.ms .ms-scan-controls button{color:var(--case-accent)}
-#case-content .yg.ms .ms-status{background:var(--case-soft);color:var(--case-accent)}
-#case-content .yg.ms .ms-scan-step{border-color:#85939F;color:#344650}
-#case-content .yg.td .td-concept{background:var(--case-soft);color:var(--yg-ink)}
-#case-content .yg.fm .fm-merch-grid a,
-#case-content .yg.cn .cn-objects a,
-#case-content .yg.cn .cn-spread a{background:var(--case-soft)}
-#case-content .yg.rx .rx-brand-row .vp-figure a{background:transparent}
-#case-content .yg.vd .vd-spotlight-picks button{background:var(--case-soft);color:#46533D}
-#case-content .yg.vd .vd-spotlight-picks button[aria-pressed="true"]{background:#D3DAC9;border-color:var(--case-accent)}
-#case-content .yg.vp .vp-switch button[aria-pressed="true"]{background:var(--case-accent);border-color:var(--case-accent);color:#FFF9F2}
-`;
-document.head.appendChild(cohesiveCaseStyles);
 
-const coverMatchedPageStyles=document.createElement("style");
-coverMatchedPageStyles.textContent=`/* Cover colors are the source of truth; secondary stages are 50% white tints. */
-#case-content .yg{
- --case-base:#889572;
- --case-soft:color-mix(in srgb,var(--case-base) 50%,white);
- --case-soft-stage:linear-gradient(#FFFFFF80,#FFFFFF80),var(--case-stage);
+// Decorative glyphs use text presentation on desktop and disappear on small screens.
+// Functional gallery controls retain their arrows and accessible labels.
+function normalizePortfolioGlyphs(root){
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+ const targets=[];
+ while(walker.nextNode()){
+  const node=walker.currentNode;
+  if(!/[↗↘↙↖↑↓✳✦★☆]/u.test(node.nodeValue))continue;
+  if(node.parentElement?.closest('script,style,textarea,svg,[data-ui-glyph]'))continue;
+  targets.push(node);
+ }
+ targets.forEach(node=>{
+  const value=node.nodeValue;
+  const surrounding=value.replace(/[↗↘↙↖↑↓✳✦★☆\uFE0E\uFE0F]/gu,'').trim();
+  const fragment=document.createDocumentFragment();
+  let end=0;
+  for(const match of value.matchAll(/([↗↘↙↖↑↓✳✦★☆])[\uFE0E\uFE0F]?/gu)){
+   fragment.append(value.slice(end,match.index));
+   const mark=document.createElement('span');
+   const decoration=Boolean(surrounding)||/[✳✦★☆]/u.test(match[1])||Boolean(node.parentElement?.closest('.view-circle,.round-link i,.nav-contact>span,.wordmark>span'));
+   mark.dataset.uiGlyph='true';
+   mark.className='ui-symbol'+(decoration?' mobile-decoration':'');
+   if(decoration)mark.setAttribute('aria-hidden','true');
+   mark.textContent=match[1]+'\uFE0E';
+   fragment.append(mark);end=match.index+match[0].length;
+  }
+  fragment.append(value.slice(end));node.replaceWith(fragment);
+ });
 }
-#case-content .yg.ms{--case-base:#8B9BAB}
-#case-content .yg.rx{
- --case-base:#3E4A56;
- --case-stage:linear-gradient(135deg,#53606B 0%,#3E4A56 58%,#333F4B 100%);
-}
-#case-content .yg.fm{--case-base:#A89B8E}
-#case-content .yg.td{--case-base:#8195A2}
-#case-content .yg.cn{--case-base:#802D49}
-#case-content .yg .yg-showcase,
-#case-content .yg.ms .ms-hero,
-#case-content .yg.rx .rx-hero,
-#case-content .yg.vd .vd-print-stage{background:var(--case-stage)}
-/* Give the print/campaign hero artwork a matching presentation mat. */
-#case-content .yg.td .td-hero>a,
-#case-content .yg.cn .cn-hero>a,
-#case-content .yg.fm .fm-scene-link{
- background:var(--case-stage);padding:clamp(16px,3vw,42px);display:block;
- border-radius:10px;
-}
-#case-content .yg .yg-stage,
-#case-content .yg .yg-stage-score,
-#case-content .yg .yg-comparison-stage,
-#case-content .yg .yg-assessment-showcase,
-#case-content .yg.ms .ms-stage,
-#case-content .yg.ms .ms-stage-dark,
-#case-content .yg.ms .ms-scan,
-#case-content .yg.rx .rx-decision>figure,
-#case-content .yg.vd .vd-spotlight-stage,
-#case-content .yg.vd .vd-report-pair,
-#case-content .yg.vd .vd-web-laptop,
-#case-content .yg.cn .cn-objects a,
-#case-content .yg.cn .cn-spread a,
-#case-content .yg.fm .fm-merch-grid a{
- background:var(--case-soft-stage);color:#2C3944;
-}
-/* Blue accent rows stay blue, with the same 50% tint treatment. */
-#case-content .yg.fm .fm-display{
- background:linear-gradient(#FFFFFF80,#FFFFFF80),radial-gradient(ellipse at 46% 38%,#A2B1BA 0%,#8195A2 52%,#627987 100%);
- color:#2C3944;
-}
-#case-content .yg.td .td-concept{background:var(--case-soft-stage);color:#2C3944}
-#case-content .yg .yg-reflection{background:var(--case-soft)}
-#case-content .yg .yg-stage figcaption,
-#case-content .yg .yg-comparison-stage figcaption,
-#case-content .yg.ms .ms-stage figcaption,
-#case-content .yg.vd .vd-report-pair figcaption{color:#34434D}
-`;
-document.head.appendChild(coverMatchedPageStyles);
+normalizePortfolioGlyphs(document.body);
+new MutationObserver(()=>normalizePortfolioGlyphs(content)).observe(content,{childList:true,subtree:true,characterData:true});
