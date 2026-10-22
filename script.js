@@ -52,6 +52,27 @@ const yoggerIllustrations = [
 // Scoped to the Yogger case study so your homepage keeps its existing styling.
 const yoggerStyles = document.createElement('style');
 yoggerStyles.textContent = `
+  /* Business impact: scoped to the Yogger mobile case study. */
+  #case-content .yg .yg-business-impact { margin-block:24px 64px; }
+  #case-content .yg .yg-impact-panel { padding:clamp(24px,4vw,48px); border:1px solid rgba(44,57,68,.18); border-radius:24px; }
+  #case-content .yg .yg-impact-panel h2 { max-width:800px; margin-bottom:20px; }
+  #case-content .yg .yg-impact-context { max-width:780px; margin:0; color:var(--yg-ink); font-size:15px; line-height:1.8; }
+  #case-content .yg .yg-impact-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px; margin:36px 0 0; }
+  #case-content .yg .yg-impact-metric { min-width:0; display:flex; flex-direction:column; }
+  #case-content .yg .yg-impact-metric dt { order:2; margin:14px 0 0; font-size:14px; line-height:1.5; font-weight:600; color:var(--yg-ink); }
+  #case-content .yg .yg-impact-metric dd { display:contents; margin:0; }
+  #case-content .yg .yg-impact-metric dd>strong { order:1; display:block; font-family:Manrope,Arial,sans-serif; font-size:clamp(28px,3.5vw,46px); line-height:1.15; letter-spacing:-.045em; font-weight:500; color:var(--yg-ink); white-space:nowrap; }
+  #case-content .yg .yg-impact-metric dd>span { order:3; display:block; margin-top:6px; font-size:12px; line-height:1.65; color:var(--yg-ink); opacity:.75; }
+  #case-content .yg .yg-impact-arrow { font-family:Arial,sans-serif; font-size:.7em; vertical-align:.08em; }
+  #case-content .yg .yg-impact-sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
+  @media(max-width:700px) {
+    #case-content .yg .yg-business-impact { margin-block:12px 40px; }
+    #case-content .yg .yg-impact-metrics { grid-template-columns:minmax(0,1fr); gap:22px; margin-top:28px; }
+    #case-content .yg .yg-impact-metric+.yg-impact-metric { border-top:1px solid rgba(44,57,68,.14); padding-top:22px; }
+    #case-content .yg .yg-impact-metric dd>strong { font-size:38px; }
+    #case-content .yg .yg-impact-metric dt { margin-top:8px; }
+  }
+
   .yg { --yg-sage:#c3cfad; --yg-green:#526447; --yg-ink:#2c3944; --yg-paper:#f7f4ef; color:var(--yg-ink); background:var(--yg-paper); }
   .yg *, .yg *::before, .yg *::after { box-sizing:border-box; }
   .yg .yg-wrap { width:min(1160px,88%); margin-inline:auto; }
@@ -692,7 +713,7 @@ function renderYogger() {
       </div>
     </div>
     <nav class="yg-nav" aria-label="Yogger case study sections"><div class="yg-wrap">
-      <a href="#yg-overview">Overview</a><a href="#yg-assessment">01 / Assessment</a><a href="#yg-scoring">02 / Scoring</a><a href="#yg-comparison">03 / Comparison</a><a href="#yg-reflection">Reflection</a>
+      <a href="#yg-overview">Overview</a><a href="#yg-assessment">01 / Assessment</a><a href="#yg-scoring">02 / Scoring</a><a href="#yg-comparison">03 / Comparison</a><a href="#yg-impact">Impact</a><a href="#yg-reflection">Reflection</a>
     </div></nav>
     <section class="yg-overview yg-wrap yg-reveal" id="yg-overview">
       <div><p class="yg-kicker">THE CHALLENGE</p><h2>Score data needs<br><em>a clear path</em></h2></div>
@@ -734,6 +755,18 @@ function renderYogger() {
       <div class="yg-comparison-decisions yg-reveal">
         <div><p class="yg-kicker">MAKE CHANGE VISIBLE</p><h3>Put the comparison in one view</h3><p>Previous and current results sit side by side, with directional changes next to the measurements they describe. Users can connect the overall result to what changed underneath it.</p></div>
         <div><p class="yg-kicker">CARRY THE STORY BEYOND THE APP</p><h3>Keep reports familiar</h3><p>The printable report follows the same hierarchy: overall comparison first, component breakdown next. The format changes, but the explanation stays consistent.</p></div>
+      </div>
+    </section>
+    <section class="yg-business-impact yg-wrap yg-reveal" id="yg-impact" aria-labelledby="yg-impact-title">
+      <div class="yg-impact-panel">
+        <p class="yg-kicker">THE IMPACT</p>
+        <h2 id="yg-impact-title">A clearer product.<br><em>Stronger results.</em></h2>
+        <p class="yg-impact-context">I redesigned Yogger’s core experience around assessments, scoring, and progress tracking. Following the launch, the product saw stronger trial-to-paid conversion and revenue per trial, while supporting higher-value business pricing.</p>
+        <dl class="yg-impact-metrics">
+          <div class="yg-impact-metric"><dt>Trial-to-paid conversion</dt><dd><strong>+26%</strong><span>39% → 49% after launch</span></dd></div>
+          <div class="yg-impact-metric"><dt>Revenue per trial</dt><dd><strong>+45%</strong><span>Increase in revenue per trial</span></dd></div>
+          <div class="yg-impact-metric"><dt>Monthly business pricing</dt><dd><strong>$30 <span class="yg-impact-arrow" aria-hidden="true">→</span><span class="yg-impact-sr-only"> to </span> $100</strong><span>Business plan pricing after redesign</span></dd></div>
+        </dl>
       </div>
     </section>
     <section class="yg-system yg-wrap yg-reveal">
