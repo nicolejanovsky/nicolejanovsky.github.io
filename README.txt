@@ -1,11 +1,9 @@
-Replace index.html, style.css, and script.js in the root of your GitHub portfolio with these complete files.
+NICOLE PORTFOLIO - CURATED 3D ROOM V6
 
-Keep your existing assets folder. This update uses your current image filenames.
+Replace index.html, style.css, and script.js. Merge the supplied assets/ images into your existing assets folder. Do not delete the other assets already on your website.
 
-Included changes:
-- Your new Tide, Facebook Marketplace, and Chanel case-study copy.
-- Consistent spacing, aligned editorial columns, and responsive layouts.
-- Cream, charcoal, sage, and restrained pink page accents.
-- Three refreshed homepage covers with real artwork and subtle hover motion.
+Preserves the five connected room planes and all original project case-study sections. Featured projects: Yogger Mobile App, Milestone, Chanel.
 
-The existing Yogger, Milestone, and Relax case studies are retained, including the latest Relax square phone compositions.
+Personal photography: ONLY five selected images: beach yoga, coast, gallery interior, orange archway, museum portrait.
+
+Project covers: 9 supplied images from your screenshots. Project images link to existing case studies.

@@ -1,0 +1,1 @@
+V10: Replaced hero tile content with original portfolio assets, created color-matted full-image compositions, rebalanced positions to prevent cutoffs, and refined room depth. Replace index.html, style.css, script.js, and assets/ (or upload all files). Existing case study content retained.

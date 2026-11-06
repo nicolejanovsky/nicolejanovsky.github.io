@@ -1910,3 +1910,176 @@ function normalizePortfolioGlyphs(root){
 }
 normalizePortfolioGlyphs(document.body);
 new MutationObserver(()=>normalizePortfolioGlyphs(content)).observe(content,{childList:true,subtree:true,characterData:true});
+
+
+
+
+
+// Bright gallery v1: all wall content and seams use the same projected corners.
+(()=>{
+ const hero=document.querySelector('.home-hero'); if(!hero)return;
+ const style=document.createElement('style');style.textContent=`
+body.portfolio-home{background:#fff}
+.portfolio-home .home-hero.bright-hero{display:block;padding:0!important;margin:0 auto;max-width:1800px;width:100%;background:#fff}
+.bright-stage{position:relative;width:100%;aspect-ratio:1600/775;overflow:hidden;background:#fff}
+.bright-scene{position:absolute;width:1600px;height:820px;transform-origin:0 0}
+.bright-shell{position:absolute;inset:0;width:1600px;height:820px;pointer-events:none}
+.bright-stage:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#fff,#ffffff00 8%,#ffffff00 92%,#fff),linear-gradient(#fff,#ffffff00 8%,#ffffff00 94%,#fff);z-index:4}
+.bright-wall{position:absolute;left:0;top:0;transform-origin:0 0;box-sizing:border-box;display:grid;min-width:0;min-height:0}
+.bright-wall--left,.bright-wall--right{width:381.579px;height:480px;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1.22fr) minmax(0,1fr);padding:38px 48px;gap:24px;align-items:stretch;justify-content:stretch}
+.bright-wall--right{grid-template-rows:minmax(0,1.9fr) minmax(0,1fr)}
+.bright-wall--left [data-project="chanel"]{padding:0}.bright-wall--left [data-project="chanel"] img{transform:scale(1.16)}
+.bright-wall--back{width:940px;height:480px;padding:20px;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.bright-column{display:grid;gap:20px;min-width:0;min-height:0;grid-template-rows:minmax(0,.95fr) minmax(0,1.8fr)}
+.bright-column:nth-child(2){grid-template-rows:minmax(0,2.1fr) minmax(0,1.2fr)}
+.bright-mini{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.55fr);gap:12px;min-height:0;min-width:0}
+.bright-icons{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));gap:10px;min-height:0;min-width:0}
+.bright-art{container-type:size;display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;height:100%;min-height:0;min-width:0;margin:0;padding:14px;border:0;border-radius:16px;overflow:hidden;cursor:pointer;background:var(--tile,#e4e9e6);box-shadow:0 4px 12px #24323e09;transition:box-shadow .2s}
+.bright-art:hover{box-shadow:0 7px 18px #27323b22}
+.bright-art:focus-visible,.bright-link:focus-visible{outline:3px solid #3b82f6;outline-offset:4px}
+.bright-art img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}
+.bright-phone{display:block;box-sizing:border-box;width:min(100cqw,46.1426cqh);height:min(216.72cqw,100cqh);flex:none;padding:3px;border:1px solid #6b757c;border-radius:19px;background:#1a242b;box-shadow:1px 4px 7px #26333e22;overflow:hidden}
+.bright-art .bright-phone img{border-radius:15px;object-fit:contain;background:transparent}
+.bright-laptop{display:flex;flex-direction:column;align-items:center;justify-content:center;width:min(100cqw,143cqh);height:min(70cqw,100cqh);flex:none}
+.bright-laptop-screen{display:block;box-sizing:border-box;width:94%;height:calc(100% - 6px);padding:4px;border:1px solid #64727a;border-radius:7px 7px 2px 2px;background:#263139;overflow:hidden}
+.bright-art .bright-laptop-screen img{object-fit:contain;background:#fff}
+.bright-laptop-base{display:block;width:100%;height:6px;flex:none;background:linear-gradient(#dce0e2,#889299);border-radius:1px 1px 60% 60%}
+.bright-wall--left .bright-art:first-child{padding:24px}
+.bright-art--photo{padding:0;cursor:default;background:#ebe7e1}
+.bright-art--photo img{object-fit:cover;object-position:58% 52%}
+.bright-art--icon{padding:0;background:transparent;box-shadow:none}
+.bright-wall--back [data-project="tide"],.bright-wall--back [data-project="marketplace"]{padding:5px}
+.bright-floor-copy{position:absolute;left:0;top:0;width:800px;height:114px;transform-origin:0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;color:#27343d;z-index:5}
+.portfolio-home .home-hero.bright-hero .bright-floor-copy h1{margin:0;padding:0;font-family:Georgia,serif;font-size:41px;font-weight:500;line-height:1.15;letter-spacing:-1.5px;white-space:nowrap}
+.portfolio-home .home-hero.bright-hero .bright-floor-copy p{display:block;visibility:visible;opacity:1;margin:0;padding:0;transform:none;font:400 18px/1.4 'DM Sans',Arial,sans-serif;color:#4e606c;letter-spacing:0}
+.bright-link{display:inline-flex;align-items:center;gap:23px;text-decoration:none}
+.bright-front-cta{position:absolute;left:50%;top:756px;transform:translateX(-50%);z-index:6;margin:0;padding:13px 25px;min-height:48px;box-sizing:border-box;border-radius:50px;font:500 16px/1.25 'DM Sans',Arial,sans-serif;color:#243743;background:linear-gradient(145deg,#ffffffe6,#e7eff38f);border:1px solid #d9e2e8;box-shadow:0 9px 25px #30475420,inset 0 1px 0 #fff,inset 0 -1px 0 #c9d5dc90;backdrop-filter:blur(20px) saturate(155%);-webkit-backdrop-filter:blur(20px) saturate(155%);white-space:nowrap;transition:box-shadow .2s,background .2s}
+.portfolio-home .home-header .nav-contact{background:linear-gradient(145deg,#ffffffe6,#e7eff38f);border:1px solid #d9e2e8;box-shadow:0 5px 17px #30475412,inset 0 1px 0 #fff,inset 0 -1px 0 #c9d5dc70;backdrop-filter:blur(20px) saturate(155%);-webkit-backdrop-filter:blur(20px) saturate(155%);color:#243743;transition:background .2s,box-shadow .2s}
+.portfolio-home .home-header .nav-contact:hover{background:linear-gradient(145deg,#fff,#eaf1f5cc);color:#243743;box-shadow:0 8px 21px #30475420,inset 0 1px 0 #fff}
+.bright-front-cta:hover{background:linear-gradient(145deg,#fff,#eaf1f5cc);box-shadow:0 12px 28px #3047542a,inset 0 1px 0 #fff}
+@media(max-width:760px){
+.bright-stage{aspect-ratio:auto;overflow:visible;padding:20px 18px 36px;box-sizing:border-box}.bright-stage:after,.bright-shell,.bright-wall--left{display:none}
+.bright-scene{position:relative;width:100%;height:auto;transform:none!important;display:flex;flex-direction:column;gap:22px}
+.bright-wall{position:relative;transform:none!important;width:100%;height:auto}
+.bright-wall--back{padding:0;gap:10px;height:440px}.bright-column{gap:10px}.bright-mini{gap:7px}.bright-icons{gap:8px}
+.bright-wall--right{height:245px;padding:0;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,1fr);gap:12px;order:1}
+.bright-art{padding:8px;border-radius:12px}.bright-phone{padding:2px;border-radius:14px}.bright-art .bright-phone img{border-radius:11px}.bright-art--photo,.bright-art--icon{padding:0}
+.bright-floor-copy{position:relative;width:100%;height:auto;transform:none!important;order:2;padding:10px 0;gap:12px}
+.portfolio-home .home-hero.bright-hero .bright-floor-copy h1{font-size:clamp(22px,5.5vw,37px);letter-spacing:-.8px}.portfolio-home .home-hero.bright-hero .bright-floor-copy p{font-size:16px}
+.bright-front-cta{position:relative;left:auto;top:auto;transform:none;align-self:center;order:3;font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){.bright-art,.bright-front-cta{transition:none}}
+`;document.head.append(style);
+ const art=(key,file,label,color,extra='')=>`<button type="button" class="bright-art ${extra}" data-project="${key}" aria-label="${label}" style="--tile:${color}">${["yogger","milestone","relax"].includes(key)&&!extra?`<span class="bright-phone"><img src="assets/${file}" alt="${label}" decoding="async"></span>`:file==="gallery-marketplace-monitor.png"?`<span class="bright-monitor"><img src="assets/${file}" alt="${label}" decoding="async"></span>`:key==="reports"?`<span class="bright-laptop"><span class="bright-laptop-screen"><img src="assets/${file}" alt="${label}" decoding="async"></span><span class="bright-laptop-base"></span></span>`:`<img src="assets/${file}" alt="${label}" decoding="async">`}</button>`;
+ hero.className='hero home-hero bright-hero';
+ hero.innerHTML=`<div class="bright-stage"><div class="bright-scene">
+ <svg class="bright-shell" viewBox="0 0 1600 820" aria-hidden="true"><defs>
+ <linearGradient id="br-l"><stop stop-color="#f7f5f2"/><stop offset="1" stop-color="#fffefd"/></linearGradient><linearGradient id="br-r"><stop stop-color="#fffefd"/><stop offset="1" stop-color="#f7f5f2"/></linearGradient><linearGradient id="br-f" x2="0" y2="1"><stop stop-color="#f2efeb"/><stop offset="1" stop-color="#fff"/></linearGradient><filter id="br-ao"><feGaussianBlur stdDeviation="8"/></filter></defs>
+ <path fill="#fffefd" d="M40 -18.085H1560L1270 130H330Z"/>
+ <path fill="url(#br-l)" d="M40 -18.085L330 130V610L40 758.085Z"/>
+ <path fill="#fffefd" d="M330 130H1270V610H330Z"/>
+ <path fill="url(#br-r)" d="M1270 130L1560 -18.085V758.085L1270 610Z"/>
+ <path fill="url(#br-f)" d="M40 758.085L330 610H1270L1560 758.085Z"/>
+ <path d="M330 130V610H1270V130" stroke="#9b8d7a" stroke-opacity=".10" stroke-width="8" fill="none" filter="url(#br-ao)"/>
+ </svg>
+ <div class="bright-wall bright-wall--left">${art('reports','yogger-web-laptop.png','Yogger visual design','#dbe2cf')}${art('chanel','chanel-cover-cutout.png','Chanel editorial design','#81344e')}</div>
+ <div class="bright-wall bright-wall--back">
+ <div class="bright-column">${art('tide','gallery-tide-signs.png','Tide experiential design','#e7ebee')}${art('yogger','2- View Score.png','Yogger mobile app redesign','#dce5cf')}</div>
+ <div class="bright-column">${art('milestone','milestone-scan-start.png','Milestone protein tracker','#91a2ae')}<div class="bright-mini">${art('relax','hero-museum.webp','Personal museum photograph','#ddd','bright-art--photo')}<div class="bright-icons">${art('milestone','gallery-milestone-icon.png','Milestone case study','transparent','bright-art--icon')}${art('relax','relax-icon.png','Relax case study','transparent','bright-art--icon')}</div></div></div>
+ <div class="bright-column">${art('marketplace','gallery-marketplace-monitor.png','Marketplace campaign','#b5aa9e')}${art('relax','relax-screen-check-in.png','Relax meditation app','#dce7e3')}</div>
+ </div>
+ <div class="bright-wall bright-wall--right">${art('relax','relax-screen-listening.png','Relax listening experience','#dce7e3')}${art('marketplace','gallery-marketplace-notebook.png','Marketplace campaign notebook','#b5aa9e')}</div>
+ <div class="bright-floor-copy"><h1>product &amp; visual designer</h1><a class="bright-link" href="#work">Explore my projects <span aria-hidden="true">↓</span></a></div>
+ </div></div>`;
+ // A planar homography maps each wall rectangle to the SAME architectural corners.
+ // This avoids combining pre-skewed PNGs with a second CSS perspective transform.
+ function project(el,w,h,points){
+  const source=[[0,0],[w,0],[w,h],[0,h]],a=[];
+  source.forEach(([x,y],i)=>{const [u,v]=points[i];a.push([x,y,1,0,0,0,-u*x,-u*y,u],[0,0,0,x,y,1,-v*x,-v*y,v]);});
+  for(let i=0;i<8;i++){let pivot=i;for(let j=i+1;j<8;j++)if(Math.abs(a[j][i])>Math.abs(a[pivot][i]))pivot=j;[a[i],a[pivot]]=[a[pivot],a[i]];const n=a[i][i];for(let k=i;k<9;k++)a[i][k]/=n;for(let j=0;j<8;j++)if(j!==i){const f=a[j][i];for(let k=i;k<9;k++)a[j][k]-=f*a[i][k];}}
+  const m=a.map(r=>r[8]);el.style.transform=`matrix3d(${m[0]},${m[3]},0,${m[6]},${m[1]},${m[4]},0,${m[7]},0,0,1,0,${m[2]},${m[5]},0,1)`;
+ }
+ project(hero.querySelector('.bright-wall--left'),381.579,480,[[40,-18.085],[330,130],[330,610],[40,758.085]]);
+ project(hero.querySelector('.bright-wall--back'),940,480,[[330,130],[1270,130],[1270,610],[330,610]]);
+ project(hero.querySelector('.bright-wall--right'),381.579,480,[[1270,130],[1560,-18.085],[1560,758.085],[1270,610]]);
+ // Keep identity on a shallow floor plane with natural type proportions.
+ hero.querySelector('.bright-floor-copy').style.transform='translate(400px, 632px)';
+ const stage=hero.querySelector('.bright-stage'),scene=hero.querySelector('.bright-scene');
+ const resize=()=>{scene.style.transform=`translateY(${-45*stage.clientWidth/1600}px) scale(${stage.clientWidth/1600})`;};
+ if(window.ResizeObserver)new ResizeObserver(resize).observe(stage);else window.addEventListener('resize',resize);resize();
+ hero.querySelectorAll('[data-project]').forEach(b=>b.addEventListener('click',()=>openProject(b.dataset.project,b)));
+
+
+ const wordmark=document.querySelector('.home-header .wordmark');
+ if(wordmark){const computed=getComputedStyle(wordmark),name=hero.querySelector('.bright-floor-copy h1');name.style.fontFamily="'Manrope','DM Sans',Arial,sans-serif";name.style.fontWeight='500';}
+ // Reuse the actual homepage project backgrounds rather than approximating the greens.
+ for(const [key,selector] of [['yogger','.home-yogger'],['reports','.home-visual-feature .project-visual']]){
+  const source=document.querySelector(selector);if(source){const css=getComputedStyle(source);hero.querySelectorAll(`[data-project="${key}"]`).forEach(card=>{card.style.backgroundColor=css.backgroundColor;card.style.backgroundImage=css.backgroundImage;});}
+ }
+
+
+ // The CTA is on a screen-parallel front plane, separate from the floor homography.
+ const frontButton=hero.querySelector('.bright-floor-copy .bright-link');
+ frontButton.classList.add('bright-front-cta');scene.append(frontButton);
+
+
+
+
+ const fitDevices=()=>hero.querySelectorAll('.bright-phone').forEach(frame=>{
+  const img=frame.querySelector('img'),card=frame.parentElement;if(!img.naturalWidth)return;
+  const css=getComputedStyle(card),padX=parseFloat(css.paddingLeft)+parseFloat(css.paddingRight),padY=parseFloat(css.paddingTop)+parseFloat(css.paddingBottom);
+  const w=card.clientWidth-padX,h=card.clientHeight-padY,inset=8;
+  const ratio=Math.max(0,Math.min((w-inset)/img.naturalWidth,(h-inset)/img.naturalHeight));
+  frame.style.width=(img.naturalWidth*ratio+inset)+'px';frame.style.height=(img.naturalHeight*ratio+inset)+'px';
+ });
+ const deviceStyle=document.createElement('style');deviceStyle.textContent=`
+ .bright-phone{box-sizing:border-box;padding:3px;border-width:1px;border-radius:18px}
+ .bright-art .bright-phone img{object-fit:contain;border-radius:14px}
+ @media(max-width:760px){.bright-phone{padding:3px;border-radius:14px}.bright-art .bright-phone img{border-radius:10px}}
+ `;document.head.append(deviceStyle);
+ hero.querySelectorAll('.bright-phone img').forEach(img=>img.addEventListener('load',fitDevices,{once:true}));
+ if(window.ResizeObserver){const devicesObserver=new ResizeObserver(fitDevices);hero.querySelectorAll('.bright-phone').forEach(frame=>devicesObserver.observe(frame.parentElement));}
+ else window.addEventListener('resize',fitDevices);
+ fitDevices();
+
+ // The personal photo leads to About; all work images retain their project buttons.
+ const photo=hero.querySelector('.bright-art--photo'),aboutLink=document.createElement('a');
+ aboutLink.className=photo.className;aboutLink.style.cssText=photo.style.cssText;
+ aboutLink.href='#about';aboutLink.setAttribute('aria-label','About Nicole');aboutLink.innerHTML=photo.innerHTML;photo.replaceWith(aboutLink);
+ const interactionStyle=document.createElement('style');interactionStyle.textContent=`
+ .bright-monitor{display:block;width:min(100cqw,138cqh);aspect-ratio:1473/1068;flex:none;filter:drop-shadow(0 3px 3px #26343b20)}
+ .bright-art .bright-monitor img{width:100%;height:100%;object-fit:fill;clip-path:polygon(15.5% 12%,84.5% 12%,85.6% 13.5%,85.6% 67%,84.5% 68.3%,57.3% 68.3%,57.7% 72%,60.5% 77%,60.5% 79.5%,39.3% 79.5%,39.3% 77%,42.4% 72%,43% 68.3%,15.5% 68.3%,14.4% 67%,14.4% 13.5%);transform:translateY(5.1%) scale(1.2)}
+ .portfolio-home .home-hero.bright-hero .bright-floor-copy h1{font-family:'Manrope','DM Sans',Arial,sans-serif;font-weight:500;letter-spacing:-1.8px;font-size:37px}
+ .portfolio-home .home-work-grid .view-circle{background:linear-gradient(145deg,#ffffffd9,#e8f0f356)!important;border:1px solid #ffffffd9;box-shadow:0 7px 20px #263b4b17,inset 0 1px 0 #fff,inset 0 -1px 0 #ccd8df80;backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);color:#243743!important}
+ .portfolio-home .home-work-grid .project-visual:hover .view-circle{background:linear-gradient(145deg,#fffffff2,#e6eff5ad)!important;box-shadow:0 10px 24px #263b4b25,inset 0 1px 0 #fff}
+ .bright-art--photo{cursor:pointer}
+ .bright-motion{position:absolute;inset:0;width:1600px;height:820px;transform-origin:50% 45%;transform-style:preserve-3d}
+ @media(max-width:760px){.bright-motion{position:static;width:100%;height:auto;display:contents;transform:none!important}.portfolio-home .home-hero.bright-hero .bright-floor-copy h1{font-size:clamp(20px,5.3vw,34px);letter-spacing:-.9px}}
+ `;document.head.append(interactionStyle);
+ // Move the gallery as one rigid volume. The front-plane CTA stays stable and clickable.
+ const motion=document.createElement('div');motion.className='bright-motion';
+ [...scene.children].filter(el=>el!==frontButton).forEach(el=>motion.append(el));scene.prepend(motion);
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)'),fine=matchMedia('(hover:hover) and (pointer:fine)');
+ let desiredX=0,desiredY=0,currentX=0,currentY=0,frameId=0;
+ const enabled=()=>!reduced.matches&&fine.matches&&stage.clientWidth>760;
+ function animate(){
+  currentX+=(desiredX-currentX)*.1;currentY+=(desiredY-currentY)*.1;
+  motion.style.transform=`perspective(1500px) rotateX(${currentY.toFixed(3)}deg) rotateY(${currentX.toFixed(3)}deg)`;
+  if(Math.abs(desiredX-currentX)+Math.abs(desiredY-currentY)>.003)frameId=requestAnimationFrame(animate);else frameId=0;
+ }
+ function target(x,y){desiredX=x;desiredY=y;if(!frameId)frameId=requestAnimationFrame(animate);}
+ stage.addEventListener('pointermove',event=>{if(!enabled())return;const box=stage.getBoundingClientRect();target(((event.clientX-box.left)/box.width-.5)*3.2,-((event.clientY-box.top)/box.height-.5)*2);},{passive:true});
+ stage.addEventListener('pointerleave',()=>target(0,0));
+ const resetMotion=()=>{cancelAnimationFrame(frameId);frameId=0;desiredX=desiredY=currentX=currentY=0;motion.style.transform='none';};
+ reduced.addEventListener('change',resetMotion);fine.addEventListener('change',resetMotion);
+ window.addEventListener('resize',()=>{if(!enabled())resetMotion();},{passive:true});
+
+})();
+
+// Match case-study page surfaces to the current white homepage.
+(()=>{const surfaceStyle=document.createElement('style');surfaceStyle.textContent=`
+#case-dialog,#case-content,#case-dialog:has(.yg),#case-content:has(.yg){background:#fff}
+#case-content .yg{--yg-paper:#fff!important;background:#fff}
+#case-dialog .case-toolbar{background:rgba(255,255,255,.94)}
+#case-content .yg .yg-nav{background:rgba(255,255,255,.96)}
+`;document.head.append(surfaceStyle);})();
